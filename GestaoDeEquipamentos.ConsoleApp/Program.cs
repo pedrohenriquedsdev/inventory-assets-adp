@@ -1,6 +1,5 @@
 ﻿using GestaoDeEquipamentos.ConsoleApp.Apresentacao;
 using GestaoDeEquipamentos.ConsoleApp.Dominio;
-using System.Security.Cryptography;
 
 namespace GestaoDeEquipamentos.ConsoleApp;
 
@@ -8,8 +7,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        Equipamento?[] equipamentos = new Equipamento[100]; //array de objetos
-        TelaEquipamento telaEquipamento = new TelaEquipamento(); //para usar os métodos da class
+        Equipamento?[] equipamentos = new Equipamento[100]; 
+        TelaEquipamento telaEquipamento = new TelaEquipamento(); 
 
         while (true)
         {
@@ -22,19 +21,19 @@ class Program
             }
 
             if (opcaoMenu == "1")
-                telaEquipamento.Cadastrar(equipamentos);
+                telaEquipamento.Cadastrar();
             
             else if (opcaoMenu == "2")
-                telaEquipamento.Editar(equipamentos);
+                telaEquipamento.Editar();
 
             else if (opcaoMenu == "3")
             {
-                telaEquipamento.Excluir(equipamentos);
+                telaEquipamento.Excluir();
             }
 
             else if (opcaoMenu == "4")
             {
-                telaEquipamento.Visualizar(equipamentos);
+                telaEquipamento.Visualizar();
             }
         }
     }
