@@ -3,21 +3,21 @@ using GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
 
 namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao;
 
-public class TelaChamado
+public class TelaFabricante
 {
-    public RepositorioChamado repositorioChamado;
+    public RepositorioFabricante repositorioFabricante;
     public RepositorioEquipamento repositorioEquipamento;
 
     public string? ObterEscolhaMenuPrincipal()
     {
         Console.Clear();
         Console.WriteLine("---------------------------------");
-        Console.WriteLine("Gestão de Chamados");
+        Console.WriteLine("Gestão de Fabricantes");
         Console.WriteLine("---------------------------------");
-        Console.WriteLine("1 - Cadastrar chamado");
-        Console.WriteLine("2 - Editar chamado");
-        Console.WriteLine("3 - Excluir chamado");
-        Console.WriteLine("4 - Visualizar chamados");
+        Console.WriteLine("1 - Cadastrar fabricante");
+        Console.WriteLine("2 - Editar fabricante");
+        Console.WriteLine("3 - Excluir fabricante");
+        Console.WriteLine("4 - Visualizar fabricantes");
         Console.WriteLine("S - Sair");
         Console.WriteLine("---------------------------------");
         Console.Write("> ");
@@ -28,14 +28,14 @@ public class TelaChamado
 
     public void Cadastrar()
     {
-        ExibirCabecalho("Cadastro de Chamado");
+        ExibirCabecalho("Cadastro de Fabricante");
 
-        Chamado novoChamado = ObterDadosCadastrais();
+        Fabricante novoFabricante = ObterDadosCadastrais();
 
-        repositorioChamado.Cadastrar(novoChamado);
+        repositorioFabricante.Cadastrar(novoFabricante);
 
         Console.WriteLine("---------------------------------");
-        Console.WriteLine($"O registro \"{novoChamado.id}\" foi cadastrado com sucesso.");
+        Console.WriteLine($"O registro \"{novoFabricante.id}\" foi cadastrado com sucesso.");
         Console.WriteLine("---------------------------------");
         Console.WriteLine("Digite ENTER para continuar...");
         Console.ReadLine();
@@ -43,10 +43,8 @@ public class TelaChamado
 
     public void Editar()
     {
-        // 1. Cabeçalho
-        ExibirCabecalho("Edição de Chamado");
+        ExibirCabecalho("Edição de Fabricante");
 
-        // 2. Apresentar e selecionar o chamado que deseja editar
         VisualizarTodos(deveExibirCabecalho: false);
 
         Console.WriteLine("---------------------------------");
@@ -55,16 +53,16 @@ public class TelaChamado
 
         do
         {
-            Console.Write("Digite o id do chamado que deseja editar: ");
+            Console.Write("Digite o id do fabricante que deseja editar: ");
             idSelecionado = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(idSelecionado) && idSelecionado.Length == 7)
                 break;
         } while (true);
 
-        Chamado? novoChamado = ObterDadosCadastrais();
+        Fabricante? novoFabricante = ObterDadosCadastrais();
 
-        if (novoChamado == null)
+        if (novoFabricante == null)
         {
             Console.WriteLine("---------------------------------");
             Console.WriteLine($"Não foi possível obter os dados do registro.");
@@ -74,7 +72,7 @@ public class TelaChamado
             return;
         }
 
-        bool conseguiuEditar = repositorioChamado.Editar(idSelecionado, novoChamado);
+        bool conseguiuEditar = repositorioFabricante.Editar(idSelecionado, novoFabricante);
 
         if (!conseguiuEditar)
         {
@@ -95,10 +93,8 @@ public class TelaChamado
 
     public void Excluir()
     {
-        // 1. Apresenta o cabeçalho
-        ExibirCabecalho("Exclusão de Chamado");
+        ExibirCabecalho("Exclusão de Fabricante");
 
-        // 2. Apresentar e selecionar o chamado que deseja excluir
         VisualizarTodos(deveExibirCabecalho: false);
 
         Console.WriteLine("---------------------------------");
@@ -107,15 +103,14 @@ public class TelaChamado
 
         do
         {
-            Console.Write("Digite o id do chamado que deseja excluir: ");
+            Console.Write("Digite o id do fabricante que deseja excluir: ");
             idSelecionado = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(idSelecionado) && idSelecionado.Length == 7)
                 break;
         } while (true);
 
-        // 3. Com o objeto encontrado, excluir através do repositório
-        bool conseguiuExcluir = repositorioChamado.Excluir(idSelecionado);
+        bool conseguiuExcluir = repositorioFabricante.Excluir(idSelecionado);
 
         if (!conseguiuExcluir)
         {
@@ -137,25 +132,28 @@ public class TelaChamado
     public void VisualizarTodos(bool deveExibirCabecalho)
     {
         if (deveExibirCabecalho)
-            ExibirCabecalho("Visualização de Chamados");
+            ExibirCabecalho("Visualização de Fabricantes");
 
         Console.WriteLine(
-            "{0, -7} | {1, -30} | {2, -15} | {3, -22} | {4, -10}",
-            "Id", "Título", "Equipamento", "Data de Abertura", "Dias desde abertura"
+            "{0, -7} | {1, -25} | {2, -30} | {3, -15} | {4, -10}",
+            "Id", "Nome", "Email", "Telefone", "Qtd. Equipamentos"
         );
 
-        Chamado?[] chamados = repositorioChamado.SelecionarTodos();
+        Fabricante?[] fabricantes = repositorioFabricante.SelecionarTodos();
+        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos();
 
-        for (int i = 0; i < chamados.Length; i++)
+        for (int i = 0; i < fabricantes.Length; i++)
         {
-            Chamado? c = chamados[i];
+            Fabricante? f = fabricantes[i];
 
-            if (c == null)
+            if (f == null)
                 continue;
 
+            int qtdEquipamentos = repositorioFabricante.ContarEquipamentosPorFabricante(f.id, equipamentos);
+
             Console.WriteLine(
-                "{0, -7} | {1, -30} | {2, -15} | {3, -22} | {4, -10}",
-                c.id, c.titulo, c.equipamento.nome, c.dataAbertura.ToShortDateString(), c.ObterDiasDecorridos()
+                "{0, -7} | {1, -25} | {2, -30} | {3, -15} | {4, -10}",
+                f.id, f.nome, f.email, f.telefone, qtdEquipamentos
             );
         }
 
@@ -171,82 +169,55 @@ public class TelaChamado
     {
         Console.Clear();
         Console.WriteLine("---------------------------------");
-        Console.WriteLine("Gestão de Chamados");
+        Console.WriteLine("Gestão de Fabricantes");
         Console.WriteLine("---------------------------------");
         Console.WriteLine(titulo);
         Console.WriteLine("---------------------------------");
     }
 
-    public Chamado? ObterDadosCadastrais()
+    public Fabricante ObterDadosCadastrais()
     {
-        Console.WriteLine(
-           "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
-           "Id", "Nome", "Fabricante", "Preço de Aquisição", "Data de Fabricação"
-       );
-
-        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos();
-
-        for (int i = 0; i < equipamentos.Length; i++)
-        {
-            Equipamento? e = equipamentos[i];
-
-            if (e == null)
-                continue;
-
-            Console.WriteLine(
-                "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
-                e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString()
-            );
-        }
-
-        Console.WriteLine("---------------------------------");
-
-        string? idSelecionado;
+        Fabricante novoFabricante = new Fabricante();
 
         do
         {
-            Console.Write("Digite o id do equipamento que deseja selecionar: ");
-            idSelecionado = Console.ReadLine();
+            Console.Write("Digite o nome do fabricante: ");
+            novoFabricante.nome = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(idSelecionado) && idSelecionado.Length == 7)
-                break;
-        } while (true);
-
-        Equipamento? equipamentoSelecionado = repositorioEquipamento.SelecionarPorId(idSelecionado);
-
-        if (equipamentoSelecionado == null)
-        {
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível encontrar o equipamento informado.");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
-
-            return null;
-        }
-
-        Chamado novoChamado = new Chamado();
-
-        novoChamado.equipamento = equipamentoSelecionado;
-
-        do
-        {
-            Console.Write("Digite o título do chamado: ");
-            novoChamado.titulo = Console.ReadLine();
-
-            if (!string.IsNullOrWhiteSpace(novoChamado.titulo) &&
-                novoChamado.titulo.Length >= 3)
+            if (!string.IsNullOrWhiteSpace(novoFabricante.nome) &&
+                novoFabricante.nome.Length >= 3)
             {
                 break;
             }
 
         } while (true);
 
-        Console.Write("Digite o descrição do chamado: ");
-        novoChamado.descricao = Console.ReadLine();
+        do
+        {
+            Console.Write("Digite o email do fabricante: ");
+            novoFabricante.email = Console.ReadLine();
 
-        novoChamado.dataAbertura = DateTime.Now;
+            if (!string.IsNullOrWhiteSpace(novoFabricante.email) &&
+                novoFabricante.email.Length >= 5)
+            {
+                break;
+            }
 
-        return novoChamado;
+        } while (true);
+
+        do
+        {
+            Console.Write("Digite o telefone do fabricante: ");
+            novoFabricante.telefone = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(novoFabricante.telefone) &&
+                novoFabricante.telefone.Length >= 8)
+            {
+                break;
+            }
+
+        } while (true);
+
+        return novoFabricante;
     }
 }
