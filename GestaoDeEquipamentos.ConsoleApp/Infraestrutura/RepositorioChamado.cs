@@ -23,5 +23,10 @@ namespace GestaoDeChamados.ConsoleApp.Infraestrutura
 
             }
         }
+
+        public Chamado?[] SelecionarTodos()
+        {
+            return chamados;
+        }
     }
 }

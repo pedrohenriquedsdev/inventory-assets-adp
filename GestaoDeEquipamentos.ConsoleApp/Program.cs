@@ -1,5 +1,7 @@
-﻿using GestaoDeEquipamentos.ConsoleApp.Apresentacao;
+﻿using GestaoDeChamados.ConsoleApp.Infraestrutura;
+using GestaoDeEquipamentos.ConsoleApp.Apresentacao;
 using GestaoDeEquipamentos.ConsoleApp.Dominio;
+using GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
 
 namespace GestaoDeEquipamentos.ConsoleApp;
 
@@ -7,9 +9,24 @@ class Program
 {
     static void Main(string[] args)
     {
-        Equipamento?[] equipamentos = new Equipamento[100]; 
+        RepositorioEquipamento repositorioEquipamento = new RepositorioEquipamento();
+        RepositorioChamado repositorioChamado = new RepositorioChamado();
+
         TelaEquipamento telaEquipamento = new TelaEquipamento();
+        telaEquipamento.repositorioEquipamento = repositorioEquipamento;
+
         TelaChamado telaChamado = new TelaChamado();
+        telaChamado.repositorioChamado = repositorioChamado;
+        telaChamado.repositorioEquipamento = repositorioEquipamento;
+
+        //DADOS TESTE
+        Equipamento equipamento = new Equipamento();
+        equipamento.nome = "Notebook";
+        equipamento.fabricante = "Acer";
+        equipamento.precoAquisicao = 4000;
+        equipamento.dataFabricacao = DateTime.Now;
+
+        repositorioEquipamento.Cadastrar(equipamento);
 
         while (true)
         {

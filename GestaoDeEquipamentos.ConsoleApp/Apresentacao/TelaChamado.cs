@@ -6,8 +6,8 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
 {
     public class TelaChamado
     {
-        public RepositorioChamado repositorioChamado = new RepositorioChamado();
-        public RepositorioEquipamento repositorioEquipamento = new RepositorioEquipamento();
+        public RepositorioChamado repositorioChamado;
+        public RepositorioEquipamento repositorioEquipamento;
 
         public string? ObterEscolhaDoMenuPrincipal()
         {
@@ -101,7 +101,7 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
             Console.Write("Digite a descrição do chamado: ");
             novoChamado.descricao = Console.ReadLine();
 
-            novoChamado.dataAbertura = DateTime.Now;
+            novoChamado.dataAbertura = DateTime.Now.AddDays(-3);
 
             repositorioChamado.Cadastrar(novoChamado);
 
@@ -124,7 +124,35 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
 
         public void VisualizarTodos()
         {
+            Console.Clear();
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Gestão de Chamados");
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("Visualização de Chamados");
+            Console.WriteLine("---------------------------------");
 
+            Console.WriteLine(
+                    "{0, -7} | {1, -30} | {2, -15} | {3, -22} | {4, -10} ",
+                    "Id", "Título", "Equipamento", "Data de Abertura", "Dias desde abertura");
+
+            Chamado?[] chamados = repositorioChamado.SelecionarTodos();
+
+            for (int i = 0; i < chamados.Length; i++)
+            {
+                Chamado? c = chamados[i];
+
+                if (c == null)
+                    continue;
+
+                Console.WriteLine(
+                    "{0, -7} | {1, -30} | {2, -15} | {3, -22} | {4, -10} ",
+                    c.id, c.titulo, c.equipamento.nome, c.dataAbertura.ToString("C2"), c.ObterDiasDecorridos()
+                    );
+            }
+
+            Console.WriteLine("---------------------------------");
+            Console.Write("Digite ENTER para continuar...");
+            Console.ReadLine();
         }
     }
 }
