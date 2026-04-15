@@ -42,7 +42,7 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
                 novoEquipamento.nome = Console.ReadLine()!;
 
                 if (!string.IsNullOrWhiteSpace(novoEquipamento.nome) &&
-                    novoEquipamento.nome.Length > 3)
+                    novoEquipamento.nome.Length >= 3)
                 {
                     break;
                 }
@@ -99,8 +99,6 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
                 if (e == null) 
                     continue;
 
-
-
                 Console.WriteLine(
                     "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10} ",
                     e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString()
@@ -128,7 +126,7 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
                 novoEquipamento.nome = Console.ReadLine()!;
 
                 if (!string.IsNullOrWhiteSpace(novoEquipamento.nome) &&
-                    novoEquipamento.nome.Length > 3)
+                    novoEquipamento.nome.Length >= 3)
                 {
                     break;
                 }
@@ -141,7 +139,7 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
                 novoEquipamento.fabricante = Console.ReadLine()!;
 
                 if (!string.IsNullOrWhiteSpace(novoEquipamento.fabricante) &&
-                    novoEquipamento.fabricante.Length > 2)
+                    novoEquipamento.fabricante.Length >= 2)
                 {
                     break;
                 }
@@ -238,7 +236,7 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
             Console.ReadLine();
         }
 
-        public void Visualizar()
+        public void VisualizarTodos()
         {
             Console.Clear();
             Console.WriteLine("---------------------------------");
