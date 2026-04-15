@@ -105,6 +105,8 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao
                     );
             }
 
+            Console.WriteLine("---------------------------------");
+
             string? idSelecionado;
 
             do

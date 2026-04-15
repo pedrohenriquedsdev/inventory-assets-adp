@@ -24,6 +24,42 @@ namespace GestaoDeChamados.ConsoleApp.Infraestrutura
             }
         }
 
+        public bool Editar(string idSelecionado, Chamado novoEquipamento)
+        {
+            Chamado? chamadoSelecionado = SelecionarPorID(idSelecionado);
+
+            if (chamadoSelecionado == null)
+                return false;
+
+            chamadoSelecionado.titulo = novoEquipamento.titulo;
+            chamadoSelecionado.descricao = novoEquipamento.descricao;
+            chamadoSelecionado.dataAbertura = novoEquipamento.dataAbertura;
+            chamadoSelecionado.equipamento = novoEquipamento.equipamento;
+
+            return true;
+        }
+
+        public Chamado? SelecionarPorID(string idSelecionado)
+        {
+            Chamado? equipamentoSelecionado = null;
+
+            for (int i = 0; i < chamados.Length; i++)
+            {
+                Chamado? c = chamados[i];
+
+                if (c == null)
+                    continue;
+
+                if (c.id == idSelecionado)
+                {
+                    equipamentoSelecionado = c;
+                    break;
+                }
+            }
+
+            return equipamentoSelecionado;
+        }
+
         public Chamado?[] SelecionarTodos()
         {
             return chamados;
