@@ -124,6 +124,8 @@ class Program
                     e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString());
                 }
 
+                Console.WriteLine("---------------------------------");
+
                 string? idSelecionado;
 
                 do
@@ -274,6 +276,33 @@ class Program
             }
             else if (opcaoMenu == "4")
             {
+                Console.Clear();
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Gestão de Equipamentos");
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Visualização de Equipamento");
+                Console.WriteLine("---------------------------------");
+
+                Console.WriteLine(
+                                       "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                                       "ID", "NOME", "FABRICANTE", "PREÇO DE AQUISIÇÃO", "DATA DE FABRICAÇÃO"
+                                   );
+
+                for (int i = 0; i < equipamentos.Length; i++) //percorremos todos os indíces de 0 a 99
+                {
+                    Equipamento? e = equipamentos[i]; //referencia o valor de cada índice
+
+                    if (e == null) //null guard
+                        continue;
+
+                    Console.WriteLine(
+                        "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                    e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString());
+                }
+
+                Console.WriteLine("---------------------------------");
+                Console.Write("Digite ENTER para continuar");
+                Console.ReadLine();
             }
         }
     }
