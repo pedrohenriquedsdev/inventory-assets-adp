@@ -195,7 +195,7 @@ class Program
                 equipamentoSelecionado.dataFabricacao = novoEquipamento.dataFabricacao;
 
                 Console.WriteLine("---------------------------------");
-                Console.WriteLine($"O registro \"{equipamentoSelecionado.id}\" foi editado com sucesso!");
+                Console.WriteLine($"O registro \"{idSelecionado}\" foi editado com sucesso!");
                 Console.WriteLine("---------------------------------");
                 Console.WriteLine("Digite ENTER para continuar");
                 Console.ReadLine();
@@ -203,6 +203,74 @@ class Program
             }
             else if (opcaoMenu == "3")
             {
+                Console.Clear();
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Gestão de Equipamentos");
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("Exclusão de Equipamento");
+                Console.WriteLine("---------------------------------");
+
+                Console.WriteLine(
+                                       "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                                       "ID", "NOME", "FABRICANTE", "PREÇO DE AQUISIÇÃO", "DATA DE FABRICAÇÃO"
+                                   );
+
+                for (int i = 0; i < equipamentos.Length; i++) //percorremos todos os indíces de 0 a 99
+                {
+                    Equipamento? e = equipamentos[i]; //referencia o valor de cada índice
+
+                    if (e == null) //null guard
+                        continue;
+
+                    Console.WriteLine(
+                        "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                    e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString());
+                }
+
+                string? idSelecionado;
+
+                do
+                {
+                    Console.WriteLine("Digite o ID do equipamento que deseja excluir: ");
+                    idSelecionado = Console.ReadLine();
+
+                    if (!string.IsNullOrWhiteSpace(idSelecionado) && idSelecionado.Length == 7)
+                        break;
+                } while (true);
+
+                bool equipamentoExcluido = false;
+
+                for (int i = 0; i < equipamentos.Length; i++)
+                {
+                    Equipamento? e = equipamentos[i];
+
+                    if (e == null)
+                        continue;
+
+                    if (e.id == idSelecionado)
+                    {
+                        equipamentos[i] = null;
+                        equipamentoExcluido = true;
+                        break;
+                    }
+                }
+
+                if (equipamentoExcluido)
+                {
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine($"O registro \"{idSelecionado}\" foi excluido com sucesso!");
+                    Console.WriteLine("---------------------------------");
+                }
+
+                else
+                {
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine($"Não foi possível encontrar o registro \"{idSelecionado}\". Tente novamente!");
+                    Console.WriteLine("---------------------------------");
+                }
+
+                Console.Write("Digite ENTER para continuar");
+                Console.ReadLine();
             }
             else if (opcaoMenu == "4")
             {
