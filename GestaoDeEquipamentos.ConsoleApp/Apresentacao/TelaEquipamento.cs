@@ -6,9 +6,9 @@ namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao;
 
 public class TelaEquipamento
 {
-    public RepositorioEquipamento repositorio = new RepositorioEquipamento(); //toda tela equipamento vai ter acesso a uma instância de RepositorioEquipamento
+    public RepositorioEquipamento repositorioEquipamento;
 
-    public string? ObterEscolhaDoMenuPrincipal()
+    public string? ObterEscolhaMenuPrincipal()
     {
         Console.Clear();
         Console.WriteLine("---------------------------------");
@@ -63,7 +63,7 @@ public class TelaEquipamento
         Console.WriteLine("Digite a data de fabricação do equipamento: ");
         novoEquipamento.dataFabricacao = Convert.ToDateTime(Console.ReadLine());
 
-        repositorio.Cadastrar(novoEquipamento);
+        repositorioEquipamento.Cadastrar(novoEquipamento);
 
         Console.WriteLine("---------------------------------");
         Console.WriteLine($"O registro \"{novoEquipamento.nome}\" foi cadastrado com sucesso.");
@@ -86,7 +86,7 @@ public class TelaEquipamento
                                "ID", "NOME", "FABRICANTE", "PREÇO DE AQUISIÇÃO", "DATA DE FABRICAÇÃO"
                            );
 
-        Equipamento?[] equipamentos = repositorio.SelecionarTodos(); //passamos a referência do objeto
+        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos(); //passamos a referência do objeto
 
         for (int i = 0; i < equipamentos.Length; i++) //percorremos todos os indíces de 0 a 99
         {
@@ -141,7 +141,7 @@ public class TelaEquipamento
         Console.WriteLine("Digite a data de fabricação do equipamento: ");
         novoEquipamento.dataFabricacao = Convert.ToDateTime(Console.ReadLine());
 
-        bool conseguiuEditar = repositorio.Editar(idSelecionado, novoEquipamento);
+        bool conseguiuEditar = repositorioEquipamento.Editar(idSelecionado, novoEquipamento);
 
 
         if (!conseguiuEditar)
@@ -175,7 +175,7 @@ public class TelaEquipamento
                                "ID", "NOME", "FABRICANTE", "PREÇO DE AQUISIÇÃO", "DATA DE FABRICAÇÃO"
                            );
 
-        Equipamento?[] equipamentos = repositorio.SelecionarTodos(); //passamos a referência do objeto
+        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos(); //passamos a referência do objeto
 
         for (int i = 0; i < equipamentos.Length; i++) //percorremos todos os indíces de 0 a 99
         {
@@ -200,7 +200,7 @@ public class TelaEquipamento
                 break;
         } while (true);
 
-        bool conseguiuExcluir = repositorio.Excluir(idSelecionado);
+        bool conseguiuExcluir = repositorioEquipamento.Excluir(idSelecionado);
 
         if (conseguiuExcluir)
         {
@@ -234,13 +234,13 @@ public class TelaEquipamento
                                "ID", "NOME", "FABRICANTE", "PREÇO DE AQUISIÇÃO", "DATA DE FABRICAÇÃO"
                            );
 
-        Equipamento?[] equipamentos = repositorio.SelecionarTodos(); //passamos a referência do objeto
+        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos();
 
-        for (int i = 0; i < equipamentos.Length; i++) //percorremos todos os indíces de 0 a 99
+        for (int i = 0; i < equipamentos.Length; i++)
         {
-            Equipamento? e = equipamentos[i]; //referencia o valor de cada índice
+            Equipamento? e = equipamentos[i];
 
-            if (e == null) //null guard
+            if (e == null)
                 continue;
 
             Console.WriteLine(
