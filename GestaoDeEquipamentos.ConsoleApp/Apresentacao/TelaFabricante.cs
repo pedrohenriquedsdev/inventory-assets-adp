@@ -1,4 +1,6 @@
-﻿using GestaoDeEquipamentos.ConsoleApp.Dominio;
+﻿using System.Globalization;
+using System.Net.Mail;
+using GestaoDeEquipamentos.ConsoleApp.Dominio;
 using GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
 
 namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao;
@@ -34,18 +36,14 @@ public class TelaFabricante
 
         repositorioFabricante.Cadastrar(novoFabricante);
 
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine($"O registro \"{novoFabricante.id}\" foi cadastrado com sucesso.");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("Digite ENTER para continuar...");
-        Console.ReadLine();
+        ExibirMensagem($"O registro \"{novoFabricante.id}\" foi cadastrado com sucesso.");
     }
 
     public void Editar()
     {
         ExibirCabecalho("Edição de Fabricante");
 
-        VisualizarTodos(deveExibirCabecalho: false);
+        VisualizarTodos(exibirCabecalho: false);
 
         Console.WriteLine("---------------------------------");
 
@@ -60,42 +58,24 @@ public class TelaFabricante
                 break;
         } while (true);
 
-        Fabricante? novoFabricante = ObterDadosCadastrais();
-
-        if (novoFabricante == null)
-        {
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível obter os dados do registro.");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
-            return;
-        }
+        Fabricante novoFabricante = ObterDadosCadastrais();
 
         bool conseguiuEditar = repositorioFabricante.Editar(idSelecionado, novoFabricante);
 
         if (!conseguiuEditar)
         {
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível encontrar o registro informado.");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
+            ExibirMensagem($"Não foi possível encontrar o equipamento informado.");
             return;
         }
 
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine($"O registro \"{idSelecionado}\" foi editado com sucesso.");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("Digite ENTER para continuar...");
-        Console.ReadLine();
+        ExibirMensagem($"O registro \"{idSelecionado}\" foi editado com sucesso.");
     }
 
     public void Excluir()
     {
         ExibirCabecalho("Exclusão de Fabricante");
 
-        VisualizarTodos(deveExibirCabecalho: false);
+        VisualizarTodos(exibirCabecalho: false);
 
         Console.WriteLine("---------------------------------");
 
@@ -110,33 +90,33 @@ public class TelaFabricante
                 break;
         } while (true);
 
+        bool contemEquipamentoVinculado = repositorioEquipamento.ExisteEquipamentoDoFabricante(idSelecionado);
+
+        if (contemEquipamentoVinculado)
+        {
+            ExibirMensagem($"Não é possível excluir um fabricante com equipamentos vinculados.");
+            return;
+        }
+
         bool conseguiuExcluir = repositorioFabricante.Excluir(idSelecionado);
 
         if (!conseguiuExcluir)
         {
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível encontar o registro informado.");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
+            ExibirMensagem($"Não foi possível encontrar o fabricante informado.");
             return;
         }
 
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine($"O registro \"{idSelecionado}\" foi excluído com sucesso.");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("Digite ENTER para continuar...");
-        Console.ReadLine();
+        ExibirMensagem($"O registro \"{idSelecionado}\" foi excluído com sucesso.");
     }
 
-    public void VisualizarTodos(bool deveExibirCabecalho)
+    public void VisualizarTodos(bool exibirCabecalho)
     {
-        if (deveExibirCabecalho)
+        if (exibirCabecalho)
             ExibirCabecalho("Visualização de Fabricantes");
 
         Console.WriteLine(
-            "{0, -7} | {1, -25} | {2, -30} | {3, -15} | {4, -10}",
-            "Id", "Nome", "Email", "Telefone", "Qtd. Equipamentos"
+            "{0, -7} | {1, -20} | {2, -25} | {3, -22} | {4, -20}",
+            "Id", "Nome", "Email", "Telefone", "Qtd. de Equipamentos"
         );
 
         Fabricante?[] fabricantes = repositorioFabricante.SelecionarTodos();
@@ -149,30 +129,31 @@ public class TelaFabricante
             if (f == null)
                 continue;
 
-            int qtdEquipamentos = repositorioFabricante.ContarEquipamentosPorFabricante(f.id, equipamentos);
+            int quantidadeEquipamentos = 0;
+
+            for (int j = 0; j < equipamentos.Length; j++)
+            {
+                Equipamento? e = equipamentos[j];
+
+                if (e == null)
+                    continue;
+
+                if (e.fabricante == f)
+                    quantidadeEquipamentos++;
+            }
 
             Console.WriteLine(
-                "{0, -7} | {1, -25} | {2, -30} | {3, -15} | {4, -10}",
-                f.id, f.nome, f.email, f.telefone, qtdEquipamentos
+                "{0, -7} | {1, -20} | {2, -25} | {3, -22} | {4, -20}",
+                f.id, f.nome, f.email, f.telefone, quantidadeEquipamentos
             );
         }
 
-        if (deveExibirCabecalho)
+        if (exibirCabecalho)
         {
             Console.WriteLine("---------------------------------");
             Console.Write("Digite ENTER para continuar...");
             Console.ReadLine();
         }
-    }
-
-    public void ExibirCabecalho(string titulo)
-    {
-        Console.Clear();
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("Gestão de Fabricantes");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine(titulo);
-        Console.WriteLine("---------------------------------");
     }
 
     public Fabricante ObterDadosCadastrais()
@@ -189,20 +170,17 @@ public class TelaFabricante
             {
                 break;
             }
-
         } while (true);
 
         do
         {
-            Console.Write("Digite o email do fabricante: ");
+            Console.Write("Digite o email do equipamento: ");
             novoFabricante.email = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(novoFabricante.email) &&
-                novoFabricante.email.Length >= 5)
+            if (MailAddress.TryCreate(novoFabricante.email, out _))
             {
                 break;
             }
-
         } while (true);
 
         do
@@ -210,14 +188,42 @@ public class TelaFabricante
             Console.Write("Digite o telefone do fabricante: ");
             novoFabricante.telefone = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(novoFabricante.telefone) &&
-                novoFabricante.telefone.Length >= 8)
+            if (!string.IsNullOrWhiteSpace(novoFabricante.telefone))
             {
-                break;
-            }
+                bool existeLetraOuSimbolo = false;
 
+                for (int i = 0; i < novoFabricante.telefone.Length; i++)
+                {
+                    char caractereAtual = novoFabricante.telefone[i];
+
+                    if (!char.IsDigit(caractereAtual))
+                        existeLetraOuSimbolo = true;
+                }
+
+                if (!existeLetraOuSimbolo)
+                    break;
+            }
         } while (true);
 
         return novoFabricante;
+    }
+
+    public void ExibirCabecalho(string titulo)
+    {
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Fabricantes");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine(titulo);
+        Console.WriteLine("---------------------------------");
+    }
+
+    public void ExibirMensagem(string mensagem)
+    {
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine(mensagem);
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Digite ENTER para continuar...");
+        Console.ReadLine();
     }
 }

@@ -19,37 +19,27 @@ telaChamado.repositorioChamado = repositorioChamado;
 telaChamado.repositorioEquipamento = repositorioEquipamento;
 
 // Dados teste
-Fabricante fabricante1 = new Fabricante();
-fabricante1.nome = "Acer";
-fabricante1.email = "contato@acer.com";
-fabricante1.telefone = "11999990001";
-repositorioFabricante.Cadastrar(fabricante1);
+Fabricante fabricante = new Fabricante();
+fabricante.nome = "Acer";
+fabricante.email = "suporte@acer.com";
+fabricante.telefone = "11 3251-0235";
 
-Fabricante fabricante2 = new Fabricante();
-fabricante2.nome = "LG";
-fabricante2.email = "contato@lg.com";
-fabricante2.telefone = "11999990002";
-repositorioFabricante.Cadastrar(fabricante2);
+repositorioFabricante.Cadastrar(fabricante);
 
 Equipamento equipamento = new Equipamento();
 equipamento.nome = "Notebook";
-equipamento.fabricante = fabricante1;
+equipamento.fabricante = fabricante;
 equipamento.precoAquisicao = 2000;
 equipamento.dataFabricacao = DateTime.Now.AddYears(-5);
-repositorioEquipamento.Cadastrar(equipamento);
 
-Equipamento equipamento2 = new Equipamento();
-equipamento2.nome = "Monitor";
-equipamento2.fabricante = fabricante2;
-equipamento2.precoAquisicao = 1200;
-equipamento2.dataFabricacao = DateTime.Now.AddYears(-4);
-repositorioEquipamento.Cadastrar(equipamento2);
+repositorioEquipamento.Cadastrar(equipamento);
 
 Chamado chamado = new Chamado();
 chamado.titulo = "Quebrou o display";
 chamado.descricao = "Está com deadpixel";
 chamado.dataAbertura = DateTime.Now.AddDays(-7);
 chamado.equipamento = equipamento;
+
 repositorioChamado.Cadastrar(chamado);
 
 while (true)
@@ -86,13 +76,17 @@ while (true)
 
             if (opcaoMenu == "1")
                 telaFabricante.Cadastrar();
+
             else if (opcaoMenu == "2")
                 telaFabricante.Editar();
+
             else if (opcaoMenu == "3")
                 telaFabricante.Excluir();
+
             else if (opcaoMenu == "4")
-                telaFabricante.VisualizarTodos(deveExibirCabecalho: true);
+                telaFabricante.VisualizarTodos(exibirCabecalho: true);
         }
+
         else if (opcaoMenuPrincipal == "2")
         {
             string? opcaoMenu = telaEquipamento.ObterEscolhaMenuPrincipal();
@@ -105,13 +99,17 @@ while (true)
 
             if (opcaoMenu == "1")
                 telaEquipamento.Cadastrar();
+
             else if (opcaoMenu == "2")
                 telaEquipamento.Editar();
+
             else if (opcaoMenu == "3")
                 telaEquipamento.Excluir();
+
             else if (opcaoMenu == "4")
-                telaEquipamento.VisualizarTodos(deveExibirCabecalho: true);
+                telaEquipamento.VisualizarTodos();
         }
+
         else if (opcaoMenuPrincipal == "3")
         {
             string? opcaoMenu = telaChamado.ObterEscolhaMenuPrincipal();
@@ -124,16 +122,15 @@ while (true)
 
             if (opcaoMenu == "1")
                 telaChamado.Cadastrar();
+
             else if (opcaoMenu == "2")
                 telaChamado.Editar();
+
             else if (opcaoMenu == "3")
                 telaChamado.Excluir();
+
             else if (opcaoMenu == "4")
                 telaChamado.VisualizarTodos(deveExibirCabecalho: true);
-        }
-        else
-        {
-            break;
         }
     }
 }

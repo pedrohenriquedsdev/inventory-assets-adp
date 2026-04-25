@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Collections.Specialized;
+using System.Security.Cryptography;
 using GestaoDeEquipamentos.ConsoleApp.Dominio;
 
 namespace GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
@@ -12,7 +14,7 @@ public class RepositorioEquipamento
         novoEquipamento.id = Convert
             .ToHexString(RandomNumberGenerator.GetBytes(20))
             .ToLower()
-            .Substring(0, 7);
+            .Substring(0, 7); // 0-255
 
         for (int i = 0; i < equipamentos.Length; i++)
         {
@@ -84,5 +86,19 @@ public class RepositorioEquipamento
     public Equipamento?[] SelecionarTodos()
     {
         return equipamentos;
+    }
+
+
+    public bool ExisteEquipamentoDoFabricante(string idFabricante)
+    {
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e.fabricante.id == idFabricante)
+                return true;
+        }
+
+        return false;
     }
 }

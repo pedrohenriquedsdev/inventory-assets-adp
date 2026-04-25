@@ -26,18 +26,37 @@ public class RepositorioFabricante
         }
     }
 
-    public bool Editar(string idSelecionado, Fabricante novoFabricante)
+    public bool Editar(string idSelecionado, Fabricante novoEquipamento)
     {
         Fabricante? fabricanteSelecionado = SelecionarPorId(idSelecionado);
 
         if (fabricanteSelecionado == null)
             return false;
 
-        fabricanteSelecionado.nome = novoFabricante.nome;
-        fabricanteSelecionado.email = novoFabricante.email;
-        fabricanteSelecionado.telefone = novoFabricante.telefone;
+        fabricanteSelecionado.nome = novoEquipamento.nome;
+        fabricanteSelecionado.email = novoEquipamento.email;
+        fabricanteSelecionado.telefone = novoEquipamento.telefone;
 
         return true;
+    }
+
+    public bool Excluir(Fabricante fabricanteSelecionado)
+    {
+        for (int i = 0; i < fabricantes.Length; i++)
+        {
+            Fabricante? f = fabricantes[i];
+
+            if (f == null)
+                continue;
+
+            if (f == fabricanteSelecionado)
+            {
+                fabricantes[i] = null;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool Excluir(string idSelecionado)
@@ -83,23 +102,5 @@ public class RepositorioFabricante
     public Fabricante?[] SelecionarTodos()
     {
         return fabricantes;
-    }
-
-    public int ContarEquipamentosPorFabricante(string idFabricante, Equipamento?[] equipamentos)
-    {
-        int contador = 0;
-
-        for (int i = 0; i < equipamentos.Length; i++)
-        {
-            Equipamento? e = equipamentos[i];
-
-            if (e == null)
-                continue;
-
-            if (e.fabricante.id == idFabricante)
-                contador++;
-        }
-
-        return contador;
     }
 }

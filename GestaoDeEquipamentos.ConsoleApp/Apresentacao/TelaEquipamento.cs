@@ -28,12 +28,14 @@ public class TelaEquipamento
 
     public void Cadastrar()
     {
-        ExibirCabecalho("Cadastro de Equipamento");
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Cadastro de Equipamento");
+        Console.WriteLine("---------------------------------");
 
-        Equipamento? novoEquipamento = ObterDadosCadastrais();
-
-        if (novoEquipamento == null)
-            return;
+        Equipamento novoEquipamento = ObterDadosCadastrais();
 
         repositorioEquipamento.Cadastrar(novoEquipamento);
 
@@ -46,9 +48,32 @@ public class TelaEquipamento
 
     public void Editar()
     {
-        ExibirCabecalho("Edição de Equipamento");
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Edição de Equipamento");
+        Console.WriteLine("---------------------------------");
 
-        VisualizarTodos(deveExibirCabecalho: false);
+        Console.WriteLine(
+            "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+            "Id", "Nome", "Fabricante", "Preço de Aquisição", "Data de Fabricação"
+        );
+
+        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos();
+
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            Console.WriteLine(
+                "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString()
+            );
+        }
 
         Console.WriteLine("---------------------------------");
 
@@ -63,17 +88,7 @@ public class TelaEquipamento
                 break;
         } while (true);
 
-        Equipamento? novoEquipamento = ObterDadosCadastrais();
-
-        if (novoEquipamento == null)
-        {
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível obter os dados do registro.");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
-            return;
-        }
+        Equipamento novoEquipamento = ObterDadosCadastrais();
 
         bool conseguiuEditar = repositorioEquipamento.Editar(idSelecionado, novoEquipamento);
 
@@ -96,9 +111,32 @@ public class TelaEquipamento
 
     public void Excluir()
     {
-        ExibirCabecalho("Exclusão de Equipamento");
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Exclusão de Equipamento");
+        Console.WriteLine("---------------------------------");
 
-        VisualizarTodos(deveExibirCabecalho: false);
+        Console.WriteLine(
+            "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+            "Id", "Nome", "Fabricante", "Preço de Aquisição", "Data de Fabricação"
+        );
+
+        Equipamento?[] equipamentos = repositorioEquipamento.SelecionarTodos();
+
+        for (int i = 0; i < equipamentos.Length; i++)
+        {
+            Equipamento? e = equipamentos[i];
+
+            if (e == null)
+                continue;
+
+            Console.WriteLine(
+                "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString()
+            );
+        }
 
         Console.WriteLine("---------------------------------");
 
@@ -132,10 +170,14 @@ public class TelaEquipamento
         Console.ReadLine();
     }
 
-    public void VisualizarTodos(bool deveExibirCabecalho)
+    public void VisualizarTodos()
     {
-        if (deveExibirCabecalho)
-            ExibirCabecalho("Visualização de Equipamentos");
+        Console.Clear();
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Visualização de Equipamentos");
+        Console.WriteLine("---------------------------------");
 
         Console.WriteLine(
             "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
@@ -153,34 +195,23 @@ public class TelaEquipamento
 
             Console.WriteLine(
                 "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
-                e.id, e.nome, e.fabricante.nome, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString()
+                e.id, e.nome, e.fabricante, e.precoAquisicao.ToString("C2"), e.dataFabricacao.ToShortDateString()
             );
         }
 
-        if (deveExibirCabecalho)
-        {
-            Console.WriteLine("---------------------------------");
-            Console.Write("Digite ENTER para continuar...");
-            Console.ReadLine();
-        }
+        Console.WriteLine("---------------------------------");
+        Console.Write("Digite ENTER para continuar...");
+        Console.ReadLine();
     }
 
-    public void ExibirCabecalho(string titulo)
+    public Equipamento ObterDadosCadastrais()
     {
-        Console.Clear();
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("Gestão de Equipamentos");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine(titulo);
-        Console.WriteLine("---------------------------------");
-    }
+        Equipamento novoEquipamento = new Equipamento();
 
-    public Equipamento? ObterDadosCadastrais()
-    {
         Console.WriteLine(
-            "{0, -7} | {1, -25} | {2, -30} | {3, -15}",
-            "Id", "Nome", "Email", "Telefone"
-        );
+                  "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -20}",
+                  "Id", "Nome", "Email", "Telefone", "Qtd. de Equipamentos"
+              );
 
         Fabricante?[] fabricantes = repositorioFabricante.SelecionarTodos();
 
@@ -192,38 +223,23 @@ public class TelaEquipamento
                 continue;
 
             Console.WriteLine(
-                "{0, -7} | {1, -25} | {2, -30} | {3, -15}",
-                f.id, f.nome, f.email, f.telefone
+                "{0, -7} | {1, -15} | {2, -15} | {3, -22} | {4, -10}",
+                f.id, f.nome, f.email, f.telefone, 0
             );
         }
 
-        Console.WriteLine("---------------------------------");
-
-        string? idSelecionado;
+        string? idFabricanteSelecionado;
 
         do
         {
-            Console.Write("Digite o id do fabricante que deseja selecionar: ");
-            idSelecionado = Console.ReadLine();
+            Console.Write("Digite o id do fabricante do equipamento: ");
+            idFabricanteSelecionado = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(idSelecionado) && idSelecionado.Length == 7)
+            if (!string.IsNullOrWhiteSpace(idFabricanteSelecionado) && idFabricanteSelecionado.Length == 7)
                 break;
         } while (true);
 
-        Fabricante? fabricanteSelecionado = repositorioFabricante.SelecionarPorId(idSelecionado);
-
-        if (fabricanteSelecionado == null)
-        {
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível encontrar o fabricante informado.");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
-
-            return null;
-        }
-
-        Equipamento novoEquipamento = new Equipamento();
+        Fabricante? fabricanteSelecionado = repositorioFabricante.SelecionarPorId(idFabricanteSelecionado);
 
         novoEquipamento.fabricante = fabricanteSelecionado;
 
