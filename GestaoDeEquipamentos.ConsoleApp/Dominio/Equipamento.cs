@@ -1,14 +1,4 @@
-﻿using System;
-
-namespace GestaoDeEquipamentos.ConsoleApp.Dominio;
-
-/* 
-    ID 
-    NOME 
-    PREÇO DE AQUISIÇÃO
-    FABRICANTE
-    DATA DE FABRICAÇÃO
-*/
+﻿namespace GestaoDeEquipamentos.ConsoleApp.Dominio;
 
 public class Equipamento
 {
@@ -17,6 +7,4 @@ public class Equipamento
     public string fabricante;
     public decimal precoAquisicao;
     public DateTime dataFabricacao;
-
-
 }

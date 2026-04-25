@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using GestaoDeEquipamentos.ConsoleApp.Dominio;
 
 namespace GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
@@ -9,23 +10,26 @@ public class RepositorioEquipamento
 
     public void Cadastrar(Equipamento novoEquipamento)
     {
-        novoEquipamento.id = Convert.ToHexString(RandomNumberGenerator.GetBytes(20)).ToLower().Substring(0, 7);
+        novoEquipamento.id = Convert
+            .ToHexString(RandomNumberGenerator.GetBytes(20))
+            .ToLower()
+            .Substring(0, 7); // 0-255
 
-        for (int i = 0; i < equipamentos.Length; i++) //percorremos todos os indíces de 0 a 99
+        for (int i = 0; i < equipamentos.Length; i++)
         {
-            Equipamento? e = equipamentos[i]; //referencia o valor de cada índice
+            Equipamento? e = equipamentos[i];
 
             if (e == null)
             {
                 equipamentos[i] = novoEquipamento;
-                break; //salva apenas em uma posição
+                break;
             }
         }
     }
 
     public bool Editar(string idSelecionado, Equipamento novoEquipamento)
     {
-        Equipamento? equipamentoSelecionado = SelecionarPorID(idSelecionado); //recebe retorno do método
+        Equipamento? equipamentoSelecionado = SelecionarPorId(idSelecionado);
 
         if (equipamentoSelecionado == null)
             return false;
@@ -55,9 +59,9 @@ public class RepositorioEquipamento
         }
 
         return false;
-
     }
-    public Equipamento? SelecionarPorID(string idSelecionado)
+
+    public Equipamento? SelecionarPorId(string idSelecionado)
     {
         Equipamento? equipamentoSelecionado = null;
 
@@ -75,7 +79,7 @@ public class RepositorioEquipamento
             }
         }
 
-        return equipamentoSelecionado; //retorna algo ou null
+        return equipamentoSelecionado;
     }
 
     public Equipamento?[] SelecionarTodos()
