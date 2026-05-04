@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using GestaoDeEquipamentos.ConsoleApp.Dominio;
 using GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
 
