@@ -9,8 +9,8 @@ TelaEquipamento telaEquipamento = new TelaEquipamento();
 telaEquipamento.repositorioEquipamento = repositorioEquipamento;
 
 TelaChamado telaChamado = new TelaChamado();
-telaChamado.repositorioChamado = repositorioChamado;
-telaChamado.repositorioEquipamento = repositorioEquipamento;
+telaChamado.repositorioChamado = repositorioChamado; //passa referência para o atributo, afinal, assim trbalhamos apenas com um array de Chamados
+telaChamado.repositorioEquipamento = repositorioEquipamento;  //passa referência para o atributo, afinal, assim trbalhamos apenas com um array de Chamados //precisa para visualizar os equipamentos
 
 // Dados teste
 Equipamento equipamento = new Equipamento();

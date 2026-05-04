@@ -26,17 +26,17 @@ public class RepositorioChamado
         }
     }
 
-    public bool Editar(string idSelecionado, Chamado novoChamado)
+    public bool Editar(string idSelecionado, Chamado novoEquipamento)
     {
         Chamado? chamadoSelecionado = SelecionarPorId(idSelecionado);
 
         if (chamadoSelecionado == null)
             return false;
 
-        chamadoSelecionado.titulo = novoChamado.titulo;
-        chamadoSelecionado.descricao = novoChamado.descricao;
-        chamadoSelecionado.dataAbertura = novoChamado.dataAbertura;
-        chamadoSelecionado.equipamento = novoChamado.equipamento;
+        chamadoSelecionado.titulo = novoEquipamento.titulo;
+        chamadoSelecionado.descricao = novoEquipamento.descricao;
+        chamadoSelecionado.dataAbertura = novoEquipamento.dataAbertura;
+        chamadoSelecionado.equipamento = novoEquipamento.equipamento;
 
         return true;
     }

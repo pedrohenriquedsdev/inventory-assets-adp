@@ -28,9 +28,9 @@ public class TelaChamado
 
     public void Cadastrar()
     {
-        ExibirCabecalho("Cadastro de Chamado");
+        ExibirCabecalho("Cadastro de Chamados");
 
-        Chamado novoChamado = ObterDadosCadastrais();
+        Chamado novoChamado = new Chamado();
 
         repositorioChamado.Cadastrar(novoChamado);
 
@@ -43,10 +43,8 @@ public class TelaChamado
 
     public void Editar()
     {
-        // 1. Cabeçalho
-        ExibirCabecalho("Edição de Chamado");
+        ExibirCabecalho("Edição de Chamados");
 
-        // 2. Apresentar e selecionar o chamado que deseja editar
         VisualizarTodos(deveExibirCabecalho: false);
 
         Console.WriteLine("---------------------------------");
@@ -95,10 +93,8 @@ public class TelaChamado
 
     public void Excluir()
     {
-        // 1. Apresenta o cabeçalho
-        ExibirCabecalho("Exclusão de Chamado");
+        ExibirCabecalho("Exclusão de Chamados");
 
-        // 2. Apresentar e selecionar o chamado que deseja excluir
         VisualizarTodos(deveExibirCabecalho: false);
 
         Console.WriteLine("---------------------------------");
@@ -114,23 +110,22 @@ public class TelaChamado
                 break;
         } while (true);
 
-        // 3. Com o objeto encontrado, excluir através do repositório
         bool conseguiuExcluir = repositorioChamado.Excluir(idSelecionado);
 
-        if (!conseguiuExcluir)
+        if (conseguiuExcluir)
         {
             Console.WriteLine("---------------------------------");
-            Console.WriteLine($"Não foi possível encontar o registro informado.");
+            Console.WriteLine($"O registro \"{idSelecionado}\" foi excluído com sucesso.");
             Console.WriteLine("---------------------------------");
-            Console.WriteLine("Digite ENTER para continuar...");
-            Console.ReadLine();
-            return;
+        }
+        else
+        {
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine($"Não foi possível encontar o registro \"{idSelecionado}\".");
+            Console.WriteLine("---------------------------------");
         }
 
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine($"O registro \"{idSelecionado}\" foi excluído com sucesso.");
-        Console.WriteLine("---------------------------------");
-        Console.WriteLine("Digite ENTER para continuar...");
+        Console.Write("Digite ENTER para continuar...");
         Console.ReadLine();
     }
 
