@@ -1,6 +1,5 @@
 using GestaoDeEquipamentos.ConsoleApp.Dominio;
 using GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
-using System.Security.Cryptography;
 
 namespace GestaoDeEquipamentos.ConsoleApp.Apresentacao;
 
@@ -39,8 +38,8 @@ public class TelaEquipamento
 
         do
         {
-            Console.WriteLine("Digite o nome do equipamento: ");
-            novoEquipamento.nome = Console.ReadLine();
+            Console.WriteLine("Digite o novo nome do equipamento: ");
+            novoEquipamento.nome = Console.ReadLine()!;
 
             if (!string.IsNullOrWhiteSpace(novoEquipamento.nome) && novoEquipamento.nome.Length >= 3)
                 break;
@@ -49,8 +48,8 @@ public class TelaEquipamento
 
         do
         {
-            Console.WriteLine("Digite o fabricante do equipamento: ");
-            novoEquipamento.fabricante = Console.ReadLine();
+            Console.WriteLine("Digite o novo fabricante do equipamento: ");
+            novoEquipamento.fabricante = Console.ReadLine()!;
 
             if (!string.IsNullOrWhiteSpace(novoEquipamento.fabricante) && novoEquipamento.fabricante.Length >= 2)
                 break;

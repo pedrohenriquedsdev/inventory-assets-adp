@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-using GestaoDeEquipamentos.ConsoleApp.Apresentacao;
-using GestaoDeEquipamentos.ConsoleApp.Dominio;
+﻿using GestaoDeEquipamentos.ConsoleApp.Apresentacao;
 
 namespace GestaoDeEquipamentos.ConsoleApp;
 
@@ -9,7 +7,7 @@ class Program
 
     static void Main(string[] args)
     {
-        TelaEquipamento telaEquipamento = new TelaEquipamento();
+        TelaEquipamento telaEquipamento = new TelaEquipamento(); //criamos uma instância para que a program possa usar TelaEquipamento
 
         while (true)
         {

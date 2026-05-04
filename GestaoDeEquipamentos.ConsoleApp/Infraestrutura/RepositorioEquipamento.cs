@@ -5,7 +5,7 @@ namespace GestaoDeEquipamentos.ConsoleApp.Infraestrutura;
 
 public class RepositorioEquipamento
 {
-    public Equipamento?[] equipamentos = new Equipamento[100];
+    public Equipamento?[] equipamentos = new Equipamento[100]; //array de objetos, cada índice pode possuir uma referência
 
     public void Cadastrar(Equipamento novoEquipamento)
     {
